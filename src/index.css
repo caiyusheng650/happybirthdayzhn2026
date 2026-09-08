@@ -1,13 +1,140 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* 蜡笔小新手绘主题全局样式 */
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap');
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  font-family: 'Patrick Hand', 'ZCOOL KuaiLe', 'Comic Sans MS', cursive;
+  color: #3a1f0d;
+  background: #ffeecb;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 通用按钮 */
+.btn-crayon {
+  border: 3px solid #3a1f0d;
+  border-radius: 18px;
+  background: #ffd166;
+  color: #3a1f0d;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 22px;
+  box-shadow: 0 5px 0 rgba(58, 31, 13, 0.25);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  letter-spacing: 2px;
+}
+.btn-crayon:hover {
+  transform: translateY(-2px);
+}
+.btn-crayon:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(58, 31, 13, 0.25);
+}
+.btn-crayon.primary {
+  background: #ef476f;
+  color: #fff;
+}
+.btn-crayon.green {
+  background: #06d6a0;
+  color: #3a1f0d;
+}
+
+/* 游戏整体容器 */
+.game-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 20%, #ffe3a0 0, transparent 40%),
+    radial-gradient(circle at 88% 80%, #ffd1b0 0, transparent 45%),
+    #fff7e0;
+}
+
+/* 星星图标 */
+.star {
+  fill: #ffd166;
+  stroke: #3a1f0d;
+  stroke-width: 2px;
+}
+
+/* 文字手写描边 */
+.crayon-text {
+  filter: url(#crayon-soft);
+}
+
+/* 弹跳入场动画 */
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.bounce-in {
+  animation: bounceIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(20px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.float-up {
+  animation: floatUp 0.6s ease both;
+}
+
+/* 顶部 HUD */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: max(10px, env(safe-area-inset-top)) 14px 6px;
+  pointer-events: none;
+}
+.hud > * {
+  pointer-events: auto;
+}
+.star-counter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 247, 224, 0.85);
+  border: 2px solid #3a1f0d;
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-weight: bold;
+  font-size: 18px;
+}
+.hud-icon-btn {
+  background: rgba(255, 247, 224, 0.9);
+  border: 2px solid #3a1f0d;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
