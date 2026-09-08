@@ -10,6 +10,9 @@ interface SceneShellProps {
   levelId?: LevelId;
   children: ReactNode;
   status: 'playing' | 'win' | 'lose';
+  countdown?: number;
+  nextLevelTitle?: string | null;
+  isLast?: boolean;
   onWin?: () => void;
   resultTitle?: string;
   resultSubtitle?: string;
@@ -21,6 +24,9 @@ export function SceneShell({
   levelId,
   children,
   status,
+  countdown = 0,
+  nextLevelTitle,
+  isLast = false,
   onWin,
   resultTitle,
   resultSubtitle,
@@ -103,10 +109,17 @@ export function SceneShell({
               )}
               {status === 'win' && (
                 <button className="btn-crayon primary" onClick={next}>
-                  {goToNext(levelId) ? '下一关 ▶' : '🏆 去舞台'}
+                  {goToNext(levelId) ? '马上进入下一关 ▶' : '🏆 去舞台'}
                 </button>
               )}
             </div>
+            {status === 'win' && countdown > 0 && (
+              <div style={{ marginTop: 12, fontSize: 13, color: '#3a1f0d', opacity: 0.75 }}>
+                {nextLevelTitle && !isLast
+                  ? `${nextLevelTitle} · ${countdown} 秒后自动进入`
+                  : `🎉 ${countdown} 秒后自动进入终幕`}
+              </div>
+            )}
           </div>
         </div>
       )}

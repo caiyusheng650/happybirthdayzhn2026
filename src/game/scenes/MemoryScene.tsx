@@ -23,7 +23,7 @@ function shuffle() {
 }
 
 export function MemoryScene() {
-  const { status, win, lose, onWin } = useLevelFlow('memory');
+  const { status, countdown, nextLevelTitle, isLast, win, lose, onWin } = useLevelFlow('memory');
   const [cards, setCards] = useState<Card[]>(() => shuffle());
   const pendingRef = useRef<number[]>([]);
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
@@ -97,9 +97,9 @@ export function MemoryScene() {
   };
 
   return (
-    <SceneShell title="记忆翻牌" levelId="memory" status={status} onWin={onWin}
+    <SceneShell title="记忆翻牌" levelId="memory" status={status} countdown={countdown} nextLevelTitle={nextLevelTitle} isLast={isLast} onWin={onWin}
       resultTitle={status === 'win' ? '记忆大师！' : '时间到…'}
-      resultSubtitle={status === 'win' ? '春友部的伙伴都找齐啦！' : '再记记，他们的样子你认得吗？'}>
+      resultSubtitle={status === 'win' ? '春日部的伙伴都找齐啦！' : '再记记，他们的样子你认得吗？'}>
       <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '70px 14px 20px', gap: 10 }}>
         <div style={{ display: 'flex', gap: 12, fontWeight: 'bold' }}>
           <span style={{ background: 'rgba(255,247,224,0.92)', border: '2px solid #3a1f0d', borderRadius: 12, padding: '4px 12px' }}>
@@ -138,7 +138,7 @@ export function MemoryScene() {
             </button>
           ))}
         </div>
-        <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>找到所有成对的春日部伙伴 👇</p>
+        <p style={{ fontSize: 13, opacity: 0.7, margin: 0 }}>找到所有成对的伙伴 👇</p>
       </div>
     </SceneShell>
   );

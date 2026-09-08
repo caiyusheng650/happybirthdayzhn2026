@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useGame } from '../game/state/GameContext';
 import { audio } from '../game/audio/AudioEngine';
-import { ImageShinchan } from '../game/entities/ImageShinchan';
 
 // 顶部飘落彩带粒子
 const PARTICLES = Array.from({ length: 14 }, () => ({
@@ -62,9 +61,9 @@ export function StartScreen() {
         }
       `}</style>
 
-      {/* 角色 */}
-      <div className="bounce-in" style={{ marginBottom: 4 }}>
-        <ImageShinchan size={200} />
+      {/* 装饰星星 */}
+      <div className="bounce-in" style={{ marginBottom: 4, fontSize: 92, lineHeight: 1 }}>
+        🌟
       </div>
 
       <h1
@@ -79,11 +78,9 @@ export function StartScreen() {
       >
         嗨起来！星星大作战
       </h1>
-      <p style={{ fontSize: 'clamp(18px, 4vw, 24px)', margin: '0 0 6px', color: '#3a1f0d' }}>
-        你的生日愿望会实现！和野原新之助一起，
-      </p>
+
       <p style={{ fontSize: 16, margin: '0 0 18px', color: '#3a1f0d', opacity: 0.8 }}>
-        收集 5 颗梦想星星，嗨起来大作战 ✨
+        收集 3 颗梦想星星，嗨起来大作战 ✨
       </p>
 
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>

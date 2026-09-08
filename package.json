@@ -12,6 +12,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "html2canvas": "^1.4.1",
+    "isexe": "^4.0.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-scripts": "5.0.1",

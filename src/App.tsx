@@ -4,11 +4,9 @@ import { GameProvider, useGame } from './game/state/GameContext';
 import { CrayonFilters } from './game/fx/CrayonFilter';
 import { StartScreen } from './components/StartScreen';
 import { LevelSelect } from './components/LevelSelect';
-import { JumpScene } from './game/scenes/JumpScene';
 import { BeamScene } from './game/scenes/BeamScene';
 import { MemoryScene } from './game/scenes/MemoryScene';
-import { RhythmScene } from './game/scenes/RhythmScene';
-import { AimScene } from './game/scenes/AimScene';
+import { CakeScene } from './game/scenes/CakeScene';
 import { FinaleScene } from './game/scenes/FinaleScene';
 
 function Router() {
@@ -21,11 +19,9 @@ function Router() {
       break;
     case 'playing': {
       switch (state.currentLevel) {
-        case 'jump': screen = <JumpScene />; break;
         case 'beam': screen = <BeamScene />; break;
         case 'memory': screen = <MemoryScene />; break;
-        case 'rhythm': screen = <RhythmScene />; break;
-        case 'aim': screen = <AimScene />; break;
+        case 'cake': screen = <CakeScene />; break;
         default: screen = <LevelSelect />;
       }
       break;

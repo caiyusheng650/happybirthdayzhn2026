@@ -11,7 +11,7 @@ const GOAL = 15;
 const TIME_LIMIT = 30;
 
 export function BeamScene() {
-  const { status, win, lose, onWin } = useLevelFlow('beam');
+  const { status, countdown, nextLevelTitle, isLast, win, lose, onWin } = useLevelFlow('beam');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const wrapRef = useRef<HTMLDivElement | null>(null);
 
@@ -147,42 +147,33 @@ export function BeamScene() {
         ctx.beginPath(); ctx.arc(f.x - 5 + wob, f.y - 6, f.r * 0.3, 0, Math.PI * 2); ctx.fill();
       }
 
-      // 小新发射点
-      drawShinchan(W / 2, H - 40);
+      // 发射台
+      drawLaunchPad(W / 2, H - 40);
     }
 
-    function drawShinchan(x: number, y: number) {
+    function drawLaunchPad(x: number, y: number) {
       ctx.save();
       ctx.translate(x, y);
+      // 阴影
       ctx.fillStyle = 'rgba(0,0,0,0.2)';
-      ctx.beginPath(); ctx.ellipse(0, 6, 22, 5, 0, 0, Math.PI * 2); ctx.fill();
-      // body
-      ctx.fillStyle = '#e63946';
-      rRect(-14, -24, 30, 26, 8);
-      // head
-      ctx.fillStyle = '#f7cfa0';
-      ctx.beginPath(); ctx.arc(1, -34, 17, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.ellipse(0, 8, 36, 7, 0, 0, Math.PI * 2); ctx.fill();
+      // 底座（圆形）
+      ctx.fillStyle = '#6b5236';
+      ctx.beginPath(); ctx.ellipse(0, 0, 32, 10, 0, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = '#3a1f0d'; ctx.lineWidth = 2; ctx.stroke();
-      ctx.fillStyle = '#3a1f0d';
-      ctx.beginPath(); ctx.arc(1, -46, 7, Math.PI, 0); ctx.fill();
-      ctx.strokeStyle = '#3a1f0d'; ctx.lineWidth = 4; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(-10, -37); ctx.lineTo(0, -35); ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(12, -37); ctx.lineTo(2, -35); ctx.stroke();
-      // arm forward (channeling beam)
-      ctx.strokeStyle = '#e6a37c'; ctx.lineWidth = 5;
-      ctx.beginPath(); ctx.moveTo(10, -22); ctx.lineTo(28, -16); ctx.stroke();
-      ctx.restore();
-    }
-
-    function rRect(x: number, y: number, w: number, h: number, r: number) {
+      // 发射筒
+      ctx.fillStyle = '#e63946';
       ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
-      ctx.closePath();
-      ctx.fill();
+      ctx.moveTo(-14, -2); ctx.lineTo(-10, -30); ctx.lineTo(10, -30); ctx.lineTo(14, -2);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // 发射口亮光
+      ctx.fillStyle = '#ffe66d';
+      ctx.beginPath(); ctx.arc(0, -30, 6, 0, Math.PI * 2); ctx.fill();
+      // 小装饰：两侧灯
+      ctx.fillStyle = '#ffd166';
+      ctx.beginPath(); ctx.arc(-22, -4, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(22, -4, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
     }
 
     // 点击发射
@@ -215,7 +206,7 @@ export function BeamScene() {
   }, []);
 
   return (
-    <SceneShell title="动感光波" levelId="beam" status={status} onWin={onWin}
+    <SceneShell title="动感光波" levelId="beam" status={status} countdown={countdown} nextLevelTitle={nextLevelTitle} isLast={isLast} onWin={onWin}
       resultTitle={status === 'win' ? '全命中！' : '零食溜走了…'}
       resultSubtitle={status === 'win' ? '动感光波，biu biu biu！' : '小心别让零食落地！'}>
       <div ref={wrapRef} style={{ position: 'absolute', inset: 0, cursor: 'crosshair' }}>

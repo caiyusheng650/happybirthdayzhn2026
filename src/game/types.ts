@@ -1,7 +1,7 @@
 // 全局类型定义
 
 /** 关卡枚举 */
-export type LevelId = 'jump' | 'beam' | 'memory' | 'rhythm' | 'aim';
+export type LevelId = 'beam' | 'memory' | 'cake';
 
 /** 舞台阶段 */
 export type Stage =

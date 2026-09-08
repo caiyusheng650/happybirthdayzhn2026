@@ -78,12 +78,12 @@ export function LevelSelect() {
           }}
         >
           <span>🎤</span>
-          <span>嗨起来！终极舞台 · 生日快乐</span>
+          <span>嗨起来！终极舞台</span>
           <span>{finaleUnlocked ? '🌟' : '🔒'}</span>
         </button>
         {!finaleUnlocked && (
           <p style={{ textAlign: 'center', fontSize: 13, opacity: 0.7, margin: 0 }}>
-            集齐 4 颗星即可进入终极舞台
+            集齐 3 颗星即可进入终极舞台
           </p>
         )}
       </div>

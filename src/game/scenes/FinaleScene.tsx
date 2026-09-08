@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useGame } from '../../game/state/GameContext';
 import { audio } from '../../game/audio/AudioEngine';
-import { ImageShinchan } from '../../game/entities/ImageShinchan';
-import { ShareButton } from '../../components/ShareButton';
+
+const BILIBILI_PLAYER = '//player.bilibili.com/player.html?isOutside=true&aid=115425434274821&bvid=BV17FsjzREtn&cid=33339671539&p=1&autoplay=1&muted=1';
+const VIDEO_DELAY = 10; // 秒后显示视频
 
 interface Particle { x: number; y: number; vx: number; vy: number; life: number; maxLife: number; color: string }
 interface Rocket { x: number; y: number; vx: number; vy: number; target: number }
@@ -12,6 +13,26 @@ const CONFETTI = ['#ef476f', '#06d6a0', '#ffd166', '#118ab2', '#ff9f1c', '#a2d2f
 export function FinaleScene() {
   const { dispatch } = useGame();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [countdown, setCountdown] = useState(VIDEO_DELAY);
+  const [showVideo, setShowVideo] = useState(false);
+
+  // 10 秒后显示视频
+  useEffect(() => {
+    if (showVideo) return;
+    const start = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - start) / 1000);
+      const remain = VIDEO_DELAY - elapsed;
+      if (remain <= 0) {
+        clearInterval(interval);
+        setShowVideo(true);
+        setCountdown(0);
+      } else {
+        setCountdown(remain);
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [showVideo]);
 
   useEffect(() => {
     audio.ensure();
@@ -136,7 +157,6 @@ export function FinaleScene() {
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
   }, []);
 
-  const home = () => { audio.play('click'); dispatch({ type: 'GO', stage: 'level-select' }); };
   const replay = () => { audio.play('click'); dispatch({ type: 'GO', stage: 'start' }); };
 
   return (
@@ -150,40 +170,92 @@ export function FinaleScene() {
         background: 'radial-gradient(circle, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.12) 35%, transparent 65%)',
       }} />
 
-      {/* 祝福文字 */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', padding: 16, zIndex: 4 }}>
-        <div className="bounce-in" style={{ background: 'rgba(255,247,224,0.92)', border: '4px solid #3a1f0d', borderRadius: 28, padding: '18px 26px', boxShadow: '0 10px 30px rgba(0,0,0,0.35)', maxWidth: 360 }}>
-          <div style={{ fontSize: 20, fontWeight: 'bold', color: '#3a1f0d', marginBottom: 6 }}>嗨起来！星星大作战 · 生日快乐</div>
-          <div
-            className="crayon-text"
-            style={{
-              fontSize: 'clamp(30px, 9vw, 46px)',
-              fontWeight: 'bold',
-              color: '#ef476f',
-              letterSpacing: 3,
-              textShadow: '2px 2px 0 #ffd166',
-              margin: '4px 0 2px',
-            }}
-          >
-            祝你生日快乐
+      {/* 祝福卡片（倒计时显示中） */}
+      {!showVideo && (
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          textAlign: 'center', padding: 16, zIndex: 4,
+          animation: 'fadeIn 0.8s ease-out',
+        }}>
+          <div className="bounce-in" style={{ background: 'rgba(255,247,224,0.92)', border: '4px solid #3a1f0d', borderRadius: 28, padding: '18px 26px', boxShadow: '0 10px 30px rgba(0,0,0,0.35)', maxWidth: 360 }}>
+            <div style={{ fontSize: 20, fontWeight: 'bold', color: '#3a1f0d', marginBottom: 6 }}>嗨起来！生日快乐</div>
+            <div
+              className="crayon-text"
+              style={{
+                fontSize: 'clamp(30px, 9vw, 46px)',
+                fontWeight: 'bold',
+                color: '#ef476f',
+                letterSpacing: 3,
+                textShadow: '2px 2px 0 #ffd166',
+                margin: '4px 0 2px',
+              }}
+            >
+              祝你生日快乐
+            </div>
+            <div style={{ fontSize: 17, marginTop: 4, color: '#3a1f0d', opacity: 0.85 }}>
+              星星已集齐，愿望正在实现 ✨
+            </div>
           </div>
-          <div style={{ fontSize: 17, marginTop: 4, color: '#3a1f0d', opacity: 0.85 }}>
-            星星已集齐，愿望正在实现 ✨
+
+          {/* 庆祝装饰 */}
+          <div style={{ display: 'flex', gap: 18, marginTop: 20, fontSize: 48 }}>
+            <span>🎂</span><span>🎉</span><span>🎈</span><span>✨</span>
+          </div>
+
+          {/* 按钮 */}
+          <div style={{ display: 'flex', gap: 12, marginTop: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button className="btn-crayon primary" onClick={() => { audio.play('click'); setShowVideo(true); }}>
+              🎬 提前看视频
+            </button>
+            <button className="btn-crayon" onClick={replay}>🔄 再来一次</button>
+          </div>
+          {countdown > 0 && (
+            <div style={{ marginTop: 10, fontSize: 14, color: '#3a1f0d', background: 'rgba(255,247,224,0.92)', border: '2px solid #3a1f0d', borderRadius: 14, padding: '4px 14px', fontWeight: 600 }}>
+              {countdown} 秒后自动播放惊喜视频 🎁
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 视频卡片（倒计时结束） */}
+      {showVideo && (
+        <div style={{
+          position: 'absolute', inset: 0,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+          textAlign: 'center', padding: 16, zIndex: 4,
+          animation: 'fadeIn 0.8s ease-out',
+        }}>
+          <div style={{
+            width: 'min(92vw, 560px)',
+            aspectRatio: '16 / 9',
+            background: '#000',
+            border: '4px solid #3a1f0d',
+            borderRadius: 20,
+            overflow: 'hidden',
+            boxShadow: '0 10px 40px rgba(0,0,0,0.5)',
+          }}>
+            <iframe
+              src={BILIBILI_PLAYER}
+              scrolling="no"
+              frameBorder="no"
+              allowFullScreen
+              title="生日惊喜视频"
+              style={{ width: '100%', height: '100%', display: 'block' }}
+            />
+          </div>
+          <div style={{ display: 'flex', gap: 12, marginTop: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <button className="btn-crayon" onClick={replay}>🔄 再来一次</button>
           </div>
         </div>
+      )}
 
-        {/* 跳舞小新 */}
-        <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-          <ImageShinchan size={150} />
-        </div>
-
-        {/* 按钮 */}
-        <div style={{ display: 'flex', gap: 12, marginTop: 18, flexWrap: 'wrap', justifyContent: 'center' }}>
-          <ShareButton label="分享祝福" />
-          <button className="btn-crayon primary" onClick={replay}>🔄 再来一次</button>
-          <button className="btn-crayon" onClick={home}>📋 关卡</button>
-        </div>
-      </div>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(12px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }

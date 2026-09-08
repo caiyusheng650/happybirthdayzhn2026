@@ -9,7 +9,7 @@ export function initialState(): GameState {
     stage: 'start',
     currentLevel: null,
     playNonce: 0,
-    unlockedStars: { jump: false, beam: false, memory: false, rhythm: false, aim: false },
+    unlockedStars: { beam: false, memory: false, cake: false },
     totalStars: 0,
     muted: false,
     completed: false,
@@ -52,7 +52,7 @@ export function clearState(): void {
 }
 
 /** 关卡顺序 */
-export const LEVEL_ORDER: LevelId[] = ['jump', 'beam', 'memory', 'rhythm', 'aim'];
+export const LEVEL_ORDER: LevelId[] = ['beam', 'memory', 'cake'];
 
 /** 关卡是否解锁（顺序解锁） */
 export function isLevelUnlocked(state: GameState, id: LevelId): boolean {
