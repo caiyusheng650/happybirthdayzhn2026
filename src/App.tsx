@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { Analytics } from '@vercel/analytics/react';
 import { GameProvider, useGame } from './game/state/GameContext';
 import { CrayonFilters } from './game/fx/CrayonFilter';
 import { StartScreen } from './components/StartScreen';
@@ -48,6 +49,7 @@ function App() {
   return (
     <GameProvider>
       <Router />
+      <Analytics />
     </GameProvider>
   );
 }
