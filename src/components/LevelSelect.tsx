@@ -1,5 +1,6 @@
+import { useEffect, useRef, useState } from 'react';
 import { useGame } from '../game/state/GameContext';
-import { LEVELS } from '../game/config';
+import { LEVELS, LEVEL_MAP } from '../game/config';
 import { isLevelUnlocked } from '../game/state/store';
 import { audio } from '../game/audio/AudioEngine';
 import { StarIcon } from './StarIcon';
@@ -8,6 +9,26 @@ import { LEVEL_ORDER } from '../game/state/store';
 export function LevelSelect() {
   const { state, dispatch } = useGame();
   const finaleUnlocked = state.totalStars === LEVEL_ORDER.length;
+
+  // 刚解锁星星的 Toast：检测 unlockedStars 变化
+  const [toast, setToast] = useState<string | null>(null);
+  const prevStarsRef = useRef<Record<string, boolean>>({});
+  const toastTimerRef = useRef<number | null>(null);
+  useEffect(() => {
+    for (const lv of LEVEL_ORDER) {
+      const wasDone = prevStarsRef.current[lv];
+      const nowDone = state.unlockedStars[lv];
+      if (!wasDone && nowDone) {
+        const title = LEVEL_MAP[lv]?.title ?? lv;
+        if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current);
+        setToast(`🎉 ${title} 通关！获得梦想之星！`);
+        toastTimerRef.current = window.setTimeout(() => setToast(null), 2500);
+      }
+    }
+    prevStarsRef.current = { ...state.unlockedStars };
+    return () => { if (toastTimerRef.current) window.clearTimeout(toastTimerRef.current); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.unlockedStars]);
 
   const start = (id: string) => {
     audio.ensure();
@@ -22,7 +43,29 @@ export function LevelSelect() {
   };
 
   return (
-    <div className="game-root" id="share-root" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '70px 16px 30px' }}>
+    <div className="game-root" id="share-root" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '70px 16px 30px', position: 'relative' }}>
+      {toast && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 12,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 50,
+            background: 'linear-gradient(135deg, #ffd166 0%, #ff9a8b 100%)',
+            border: '3px solid #3a1f0d',
+            borderRadius: 20,
+            padding: '10px 22px',
+            fontSize: 17,
+            fontWeight: 'bold',
+            color: '#3a1f0d',
+            boxShadow: '0 6px 20px rgba(0,0,0,0.25)',
+            animation: 'bounce-in 0.5s ease',
+          }}
+        >
+          {toast}
+        </div>
+      )}
       <h1 className="crayon-text" style={{ fontSize: 'clamp(26px,6vw,40px)', margin: '0 0 4px', color: '#ef476f' }}>
         选择冒险关卡
       </h1>

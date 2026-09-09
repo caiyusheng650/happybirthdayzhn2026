@@ -3,7 +3,7 @@ import { SceneShell } from '../../components/SceneShell';
 import { useLevelFlow } from '../../game/hooks/useLevelFlow';
 import { audio } from '../../game/audio/AudioEngine';
 
-const EMOJIS = ['🧒', '👧', '👦', '🤓', '🐕', '🍑', '👘', '☁️'];
+const EMOJIS = ['🧒', '🚗', '🍔', '🤓', '🐕', '🍑', '👘', '☁️'];
 const PAIRS = 8;
 const TIME_LIMIT = 55;
 
@@ -99,7 +99,7 @@ export function MemoryScene() {
   return (
     <SceneShell title="记忆翻牌" levelId="memory" status={status} countdown={countdown} nextLevelTitle={nextLevelTitle} isLast={isLast} onWin={onWin}
       resultTitle={status === 'win' ? '记忆大师！' : '时间到…'}
-      resultSubtitle={status === 'win' ? '春日部的伙伴都找齐啦！' : '再记记，他们的样子你认得吗？'}>
+      resultSubtitle={status === 'win' ? '伙伴们都找齐啦！' : '再记记，他们的样子你认得吗？'}>
       <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '70px 14px 20px', gap: 10 }}>
         <div style={{ display: 'flex', gap: 12, fontWeight: 'bold' }}>
           <span style={{ background: 'rgba(255,247,224,0.92)', border: '2px solid #3a1f0d', borderRadius: 12, padding: '4px 12px' }}>

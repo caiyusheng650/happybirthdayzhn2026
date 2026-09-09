@@ -207,13 +207,13 @@ export function BeamScene() {
 
   return (
     <SceneShell title="动感光波" levelId="beam" status={status} countdown={countdown} nextLevelTitle={nextLevelTitle} isLast={isLast} onWin={onWin}
-      resultTitle={status === 'win' ? '全命中！' : '零食溜走了…'}
-      resultSubtitle={status === 'win' ? '动感光波，biu biu biu！' : '小心别让零食落地！'}>
+      resultTitle={status === 'win' ? '全命中！' : '差一点啦…'}
+      resultSubtitle={status === 'win' ? '动感光波，biu biu biu！' : '再瞄准一点，你可以的！'}>
       <div ref={wrapRef} style={{ position: 'absolute', inset: 0, cursor: 'crosshair' }}>
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%' }} />
       </div>
       {status === 'playing' && (
-        <div style={{ position: 'absolute', top: 62, right: 10, textAlign: 'right', zIndex: 15, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ position: 'absolute', top: 'calc(var(--hud-h) + 6px)', right: 10, textAlign: 'right', zIndex: 15, display: 'flex', flexDirection: 'column', gap: 6 }}>
           <span style={{ background: 'rgba(255,247,224,0.92)', border: '2px solid #3a1f0d', borderRadius: 12, padding: '2px 10px', fontSize: 16, fontWeight: 'bold' }}>
             ☄ {hud.hits}/{GOAL}
           </span>

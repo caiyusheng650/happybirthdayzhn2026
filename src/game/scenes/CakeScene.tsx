@@ -97,8 +97,10 @@ export function CakeScene() {
       if (!gameRef.current) {
         // 初始：蛋糕底托固定在屏幕底部中央
         const baseX = W / 2;
-        const conveyorY = H * 0.38;
-        const stackBaseY = H - 80;
+        // 传送带位置：让玩家视野同时看到传送带和塔顶的目标位置
+        const conveyorY = H * 0.35;
+        // 塔基高度：给底部留安全边距
+        const stackBaseY = H - 60;
         // 先铺 2 层基座，让玩家在已有基础上叠
         const baseCake1 = CAKE_COLORS[3];
         const baseCake2 = CAKE_COLORS[0];
@@ -125,8 +127,8 @@ export function CakeScene() {
         const newCenterX = W / 2;
         const shift = newCenterX - (g.stack[0]?.x ?? newCenterX);
         for (const s of g.stack) s.x += shift;
-        g.conveyorY = H * 0.38;
-        g.stackBaseY = H - 80;
+        g.conveyorY = H * 0.35;
+        g.stackBaseY = H - 60;
       }
     }
 
@@ -552,7 +554,7 @@ export function CakeScene() {
         <canvas ref={canvasRef} style={{ display: 'block', width: '100%', height: '100%', touchAction: 'none' }} />
       </div>
       {status === 'playing' && (
-        <div style={{ position: 'absolute', top: 62, right: 10, textAlign: 'right', zIndex: 15, display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ position: 'absolute', top: 'calc(var(--hud-h) + 6px)', right: 10, textAlign: 'right', zIndex: 15, display: 'flex', flexDirection: 'column', gap: 6 }}>
           <span style={{ background: 'rgba(255,247,224,0.92)', border: '2px solid #3a1f0d', borderRadius: 12, padding: '2px 10px', fontSize: 16, fontWeight: 'bold' }}>
             🍰 {hud.layers}/{GOAL_LAYERS}
           </span>

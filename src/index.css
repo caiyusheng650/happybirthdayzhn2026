@@ -1,6 +1,10 @@
 /* 蜡笔小新手绘主题全局样式 */
 @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap');
 
+:root {
+  --hud-h: calc(max(10px, env(safe-area-inset-top)) + 46px);
+}
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -13,6 +17,14 @@ body,
   margin: 0;
   padding: 0;
   overflow: hidden;
+}
+
+/* 移动端安全视口：iOS Safari 地址栏收起/展开时高度自适应 */
+@supports (height: 100dvh) {
+  html, body, #root {
+    height: 100dvh;
+    min-height: 100dvh;
+  }
 }
 
 body {

@@ -35,9 +35,6 @@ function reducer(state: GameState, action: Action): GameState {
       };
     case 'COMPLETE_LEVEL': {
       let next = applyStarUnlock(state, action.level);
-      // 全部关卡完成后返回关卡选择，以解锁终幕舞台
-      const allDone = next.totalStars === LEVEL_ORDER.length;
-      if (allDone) next = { ...next, stage: 'level-select' };
       return next;
     }
     case 'TOGGLE_MUTE':
